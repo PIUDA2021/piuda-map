@@ -14,6 +14,8 @@ export const HomeContext = React.createContext({
   setDepartureInput: () => console.log("not initialized"),
   arrivalInput: "",
   setArrivalInput: () => console.log("not initialized"),
+  routes: null,
+  setRoutes: () => console.log("not initialized"),
 });
 
 const HomePage = () => {
@@ -21,6 +23,7 @@ const HomePage = () => {
   const [ arrival, setArrival ] = React.useState(null);
   const [ departureInput, setDepartureInput ] = React.useState("");
   const [ arrivalInput, setArrivalInput ] = React.useState("");
+  const [ routes, setRoutes ] = React.useState(null);
 
   const value = {
     departure,
@@ -31,6 +34,8 @@ const HomePage = () => {
     setDepartureInput,
     arrivalInput,
     setArrivalInput,
+    routes,
+    setRoutes,
   }
 
   return (

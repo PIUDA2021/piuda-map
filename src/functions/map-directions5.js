@@ -17,7 +17,7 @@ exports.handler = async function (event, context) {
     params: {
       start: departure,
       goal: arrival,
-      option: "trafast",
+      option: "trafast:tracomfort:traoptimal",
     },
   });
   return {

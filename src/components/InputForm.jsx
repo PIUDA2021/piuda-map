@@ -4,7 +4,6 @@ import { IonHeader, IonToolbar, IonInput, IonButton, IonList, IonItem} from '@io
 import { debounce } from 'debounce';
 import { HomeContext } from '../pages/HomePage';
 import API from '../api';
-import { NaverMap } from 'react-naver-maps';
 
 const fromTM128ToLatLng = ({ mapx, mapy }) => {
   const point = new window.naver.maps.Point(mapx, mapy);
@@ -23,6 +22,7 @@ const InputForm = () => {
     setArrivalInput, 
     departure, 
     arrival, 
+    setRoutes,
   } = useContext(HomeContext);
 
   const handleSetDepartureDebounced = useMemo(() => debounce(setDepartureInput, 500), [setDepartureInput]);
@@ -33,10 +33,17 @@ const InputForm = () => {
     }
     const fetchRoute = async () => {
       const { data } = await API.directions5(fromTM128ToLatLng(departure), fromTM128ToLatLng(arrival));
-      console.log("data", data);
+
+      if (data.code === 0) {
+        setRoutes({
+          tracomfort: data.route.tracomfort[0],
+          trafast: data.route.trafast[0],
+          traoptimal: data.route.traoptimal[0],
+        })
+      }
     }
     fetchRoute();
-  }, [departure, arrival]);
+  }, [departure, arrival, setRoutes]);
   
   useEffect(() => {
     if (departure) {
