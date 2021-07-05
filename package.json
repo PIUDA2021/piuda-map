@@ -2,6 +2,7 @@
   "name": "piuda",
   "version": "0.0.1",
   "private": true,
+  "proxy": "http://localhost:9000",
   "dependencies": {
     "@capacitor/app": "1.0.2",
     "@capacitor/core": "3.0.2",
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.0.2",
+    "debounce": "^1.2.1",
     "eslint": "^7.30.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.23.4",

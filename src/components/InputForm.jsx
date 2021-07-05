@@ -1,12 +1,38 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useMemo, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { IonHeader, IonToolbar, IonInput, IonButton, IonList, IonItem} from '@ionic/react';
-import API from '../api';
+import { debounce } from 'debounce';
 import { HomeContext } from '../pages/HomePage';
 
 
 const InputForm = () => {
-  const { departureInput, arrivalInput, setDepartureInput, setArrivalInput, setDeparture, setArrival }  = useContext(HomeContext);
+  const departureFocus = useRef(false)
+  const arrivalFocus = useRef(false)
+  const [_departure, _setDeparture] = useState("");
+  const [_arrival, _setArrival] = useState("");
+
+  const { 
+    setDepartureInput, 
+    setArrivalInput, 
+    departure, 
+    arrival, 
+  } = useContext(HomeContext);
+
+
+  const handleSetDepartureDebounced = useMemo(() => debounce(setDepartureInput, 500), [setDepartureInput]);
+  const handleSetArrivalDebounced = useMemo(() => debounce(setArrivalInput, 500), [setArrivalInput]);
+  
+  useEffect(() => {
+    if (departure) {
+      _setDeparture(departure.title);
+    }
+  }, [ departure ]);
+
+  useEffect(() => {
+    if (arrival) {
+      _setArrival(arrival.title);
+    }
+  }, [ arrival ])
 
   return (
     <IonHeader>
@@ -15,16 +41,36 @@ const InputForm = () => {
           <IonList>
             <IonItem>
               <IonInput 
-                value={departureInput} 
+                value={_departure} 
                 placeholder="Enter Departure" 
-                onIonChange={e => setDepartureInput(e.detail.value)}
+                onIonChange={e => {
+                  _setDeparture(e.detail.value);
+                  if (departureFocus.current) {
+                    handleSetDepartureDebounced(e.detail.value);
+                  }
+                }}
+                onFocus={() => departureFocus.current = true}
+                onBlur={() => {
+                  departureFocus.current = false;
+                  handleSetDepartureDebounced("");
+                }}
               />  
             </IonItem>
             <IonItem>
               <IonInput 
-                value={arrivalInput} 
+                value={_arrival} 
                 placeholder="Enter Arrival" 
-                onIonChange={e => setArrivalInput(e.detail.value)}
+                onIonChange={e => {
+                  _setArrival(e.detail.value);
+                  if (arrivalFocus) {
+                    handleSetArrivalDebounced(e.detail.value);
+                  }
+                }}
+                onFocus={() => arrivalFocus.current = true}
+                onBlur={() => {
+                  arrivalFocus.current = false;
+                  handleSetArrivalDebounced("");
+                }}
               />
             </IonItem>
           </IonList>
