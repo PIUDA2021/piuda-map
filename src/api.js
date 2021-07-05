@@ -10,4 +10,8 @@ export default {
     api.get("/map-search", {
       params: { query },
     }),
+  directions5: (departure, arrival) =>
+    api.get("/map-directions5", {
+      params: { departure, arrival },
+    }),
 };

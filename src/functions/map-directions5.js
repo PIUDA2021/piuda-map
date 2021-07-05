@@ -12,10 +12,12 @@ const mapApi = axios.create({
 });
 
 exports.handler = async function (event, context) {
-  const { data } = await mapApi.get("/map-geocode/v2/geocode", {
+  const { departure, arrival } = event.queryStringParameters;
+  const { data } = await mapApi.get("/map-direction/v1/driving", {
     params: {
-      query: "홍대입구역",
-      coordinate: "127.1054328,37.3595963",
+      start: departure,
+      goal: arrival,
+      option: "trafast",
     },
   });
   return {
