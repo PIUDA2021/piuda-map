@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import styled from '@emotion/styled';
 import { RenderAfterNavermapsLoaded, NaverMap, Polyline } from 'react-naver-maps';
 import dotenv from 'dotenv';
@@ -7,19 +7,24 @@ import { HomeContext } from '../pages/HomePage';
 dotenv.config();
 
 const Map = () => {
-  const [zoom, setZoom ] = useState(0);
-
+  const countRef = useRef(0);
   const { 
     routes,
   } = useContext(HomeContext);
 
   useEffect(() => {
-    setZoom(10);
-    const timer = setTimeout(() => {
-      // setZoom(10);
-    }, 300)
-    
-    return timer;
+    const timer = setInterval(() => {
+      if (window.naver && window.naver.maps) {
+        const resizeEvent = document.createEvent('HTMLEvents');
+        resizeEvent.initEvent('resize', true, false);
+        window.dispatchEvent(resizeEvent);
+      }
+      if (countRef.current > 3000) {
+        clearInterval(timer);
+      }
+    }, 100)
+    countRef.current += 100;
+    return () => clearTimeout(timer);
   }, []);
 
   return (
