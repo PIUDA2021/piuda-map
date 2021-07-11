@@ -4,12 +4,8 @@ import { IonHeader, IonToolbar, IonInput, IonButton, IonList, IonItem} from '@io
 import { debounce } from 'debounce';
 import { HomeContext } from '../pages/HomePage';
 import API from '../api';
+import { fromTM128ToLatLngString } from '../utils';
 
-const fromTM128ToLatLng = ({ mapx, mapy }) => {
-  const point = new window.naver.maps.Point(mapx, mapy);
-  const latLng = window.naver.maps.TransCoord.fromTM128ToLatLng(point);
-  return `${latLng.x},${latLng.y}`
-};
 
 const InputForm = () => {
   const departureFocus = useRef(false)
@@ -32,7 +28,7 @@ const InputForm = () => {
       return;
     }
     const fetchRoute = async () => {
-      const { data } = await API.directions5(fromTM128ToLatLng(departure), fromTM128ToLatLng(arrival));
+      const { data } = await API.directions5(fromTM128ToLatLngString(departure), fromTM128ToLatLngString(arrival));
 
       if (data.code === 0) {
         setRoutes({

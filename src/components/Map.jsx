@@ -1,16 +1,34 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import styled from '@emotion/styled';
-import { RenderAfterNavermapsLoaded, NaverMap, Polyline } from 'react-naver-maps';
+import { RenderAfterNavermapsLoaded, NaverMap, Polyline, Marker } from 'react-naver-maps';
 import dotenv from 'dotenv';
 import { HomeContext } from '../pages/HomePage';
+import { fromTM128ToLatLng } from '../utils';
 
 dotenv.config();
 
 const Map = () => {
+  const [ center, setCenter ] = useState({ lat: 37.3595704, lng: 127.105399 });
+  const departureRef = useRef(null);
+  const arrivalRef = useRef(null);
+  const [ zoom, setZoom ] = useState(10);
   const countRef = useRef(0);
   const { 
     routes,
+    departure,
+    arrival,
   } = useContext(HomeContext);
+
+  const handleSetCenter = (latLng) => {
+    if (departureRef.current && arrivalRef.current) {
+      const lng = (departureRef.current.x + arrivalRef.current.x) / 2;
+      const lat = (departureRef.current.y + arrivalRef.current.y) / 2;
+      const latLng = new window.naver.maps.LatLng(lat, lng);
+      setCenter(latLng);
+    } else {
+      setCenter(latLng)
+    }
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,6 +44,22 @@ const Map = () => {
     countRef.current += 100;
     return () => clearTimeout(timer);
   }, []);
+  
+  useEffect(() => {
+    if (departure) {
+      const departureLatLng = fromTM128ToLatLng(departure);
+      departureRef.current = departureLatLng
+      handleSetCenter(departureLatLng);
+    }
+  }, [departure])
+
+  useEffect(() => {
+    if (arrival) {
+      const arrivalLatLng = fromTM128ToLatLng(arrival);
+      arrivalRef.current = arrivalLatLng
+      handleSetCenter(arrivalLatLng);
+    }
+  }, [arrival]);
 
   return (
     <Wrapper>
@@ -41,8 +75,10 @@ const Map = () => {
           width: '100%',
           height: '100%',
         }}
-        defaultCenter={{ lat: 37.3595704, lng: 127.105399 }}
-        defaultZoom={10}
+        zoom={zoom}
+        center={center}
+        onCenterChanged={center => setCenter(center)}
+        onZoomChanged={zoom => console.log(zoom)}
       >
         {routes && routes.trafast && (
           <Polyline 
@@ -52,6 +88,16 @@ const Map = () => {
             strokeStyle={'solid'}
             strokeOpacity={0.8}
             strokeWeight={4}        
+          />
+        )}
+        {departureRef.current && (
+          <Marker 
+            position={departureRef.current}
+          />
+        )}
+        {arrivalRef.current && (
+          <Marker 
+            position={arrivalRef.current}
           />
         )}
       </NaverMap>
