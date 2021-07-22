@@ -82,7 +82,7 @@ const Map = () => {
       >
         {routes && routes.trafast && (
           <Polyline 
-            path={routes.trafast.path.map(([lng, lat]) => new naver.maps.LatLng(lat, lng))}
+            path={routes.trafast.path.map(([lng, lat]) => new window.naver.maps.LatLng(lat, lng))}
             // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
             strokeColor={'#ff3344'}
             strokeStyle={'solid'}
