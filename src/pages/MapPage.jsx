@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from '@emotion/styled';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 import { useHistory } from 'react-router';
