@@ -5,7 +5,7 @@ dotenv.config();
 
 const api = axios.create({ baseURL: process.env.REACT_APP_API_URL });
 
-export default {
+const apis = {
   search: (query) =>
     api.get("/map-search", {
       params: { query },
@@ -15,3 +15,5 @@ export default {
       params: { departure, arrival },
     }),
 };
+
+export default apis;

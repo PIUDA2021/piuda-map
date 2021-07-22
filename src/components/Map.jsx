@@ -42,6 +42,7 @@ const Map = () => {
       }
     }, 100)
     countRef.current += 100;
+    setZoom(10);
     return () => clearTimeout(timer);
   }, []);
   
