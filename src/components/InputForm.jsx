@@ -10,7 +10,7 @@ import { fromTM128ToLatLngString } from '../utils';
 const InputForm = () => {
   const departureFocus = useRef(false)
   const arrivalFocus = useRef(false)
-  const [_departure, _setDeparture] = useState("");
+  const [_departure, _setDeparture] = useState('ae');
   const [_arrival, _setArrival] = useState("");
 
   const { 
@@ -52,6 +52,8 @@ const InputForm = () => {
       _setArrival(arrival.title);
     }
   }, [ arrival ])
+
+  console.log('_departure', _departure);
 
   return (
     <IonHeader>

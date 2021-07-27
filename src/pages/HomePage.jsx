@@ -44,7 +44,7 @@ const HomePage = () => {
         <InputForm />
         <IonContent fullscreen>
           <ContentWrapper>
-            <Map />
+            <Map departure="서울특별시"/>
             <SearchResults />
           </ContentWrapper>
         </IonContent>

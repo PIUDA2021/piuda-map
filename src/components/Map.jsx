@@ -88,6 +88,17 @@ const Map = () => {
             strokeColor={'#ff3344'}
             strokeStyle={'solid'}
             strokeOpacity={0.8}
+            strokeWeight={4}     
+          />
+        )}
+
+        {routes && routes.tracomfort && (
+          <Polyline 
+            path={routes.tracomfort.path.map(([lng, lat]) => new window.naver.maps.LatLng(lat, lng))}
+            // clickable // 사용자 인터랙션을 받기 위해 clickable을 true로 설정합니다.
+            strokeColor={'#223344'}
+            strokeStyle={'solid'}
+            strokeOpacity={0.8}
             strokeWeight={4}        
           />
         )}
@@ -102,7 +113,6 @@ const Map = () => {
           />
         )}
       </NaverMap>
-      
     </RenderAfterNavermapsLoaded>
   </Wrapper>
   )
